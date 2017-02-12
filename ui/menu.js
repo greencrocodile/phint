@@ -1,104 +1,24 @@
 sessvars.myObj = {userId: -1, userName: '', userPrivileges: '#', schoolUnitId: -1};
 var menu1 = Ext.create('Ext.menu.Menu', {
     items: [{
-            text: 'Паспорт автошколы',
-            disabled: !checkUserRole('PASSPORT_R')
-        }, {
-            text: 'Транспортные средства',
-            handler: function () {
-                location.href = 'vehicles.html';
-            },
-            disabled: !checkUserRole('VEHICLES_R')
-        }, {
-            text: 'Программы обучения',
-            handler: function () {
-                location.href = 'lprograms.html';
-            },
-            disabled: !checkUserRole('LP_R')
-        }, {
-            text: 'Инструкторско-преподавательский состав (ИПС)',
-            handler: function () {
-                location.href = 'staff.html';
-            },
-            disabled: !checkUserRole('STAFF_R')
-        }, {
-            text: 'Зарплата ИПС',
-            handler: function () {
-                location.href = 'salary.html';
-            },
-            disabled: !checkUserRole('SALARY_R')
-        }, {
-            text: 'Движение денежных средств',
-            handler: function () {
-                location.href = 'dds.html';
-            },
-            disabled: !checkUserRole('DDS_R')
-        }, {
-            text: 'Суточный баланс',
-            handler: function () {
-                location.href = 'payments.html';
-            },
-            disabled: !checkUserRole('DAY_BALANCE_R')
-        }]
+        text: 'Перечень',
+        disabled: !checkUserRole('INTERNS_R')
+    }]
 });
+
 var menu2 = Ext.create('Ext.menu.Menu', {
-    items: [{
-		text: 'Учебные группы',
-            handler: function () {
-                location.href = 'lgroups.html';
-            },
-            disabled: !checkUserRole('LG_R')
-        }, {
-            text: 'Учёт сдачи зачётов',
-            handler: function () {
-                location.href = 'tests.html';
-            },
-            disabled: !checkUserRole('TESTS_R')
-        }, {
-            text: 'Индивидуальные программы',
-            handler: function () {
-                location.href = 'individuals.html';
-            },
-            disabled: !checkUserRole('I_R')
-        }, {
-            text: 'Экзаменационные группы АШ',
-            handler: function () {
-                location.href = 'exam_school.html';
-            },
-            disabled: !checkUserRole('EGS_R')
-        }, {
-            text: 'Экзаменационные группы ГИБДД',
-            handler: function () {
-                location.href = 'exam_gibdd.html';
-            },
-            disabled: !checkUserRole('EGG_R')
-        }, {
-            text: 'Путевые листы',
-            handler: function () {
-                location.href = 'waybills.html';
-            },
-            disabled: !checkUserRole('WB_R')
-        }, {
-            text: 'Учёт оплаты обучения',
-            handler: function () {
-                location.href = 'student_payments.html';
-            },
-            disabled: !checkUserRole('SP_R')
-        }]
-})
-var menu3 = Ext.create('Ext.menu.Menu', {
     items: [{
             text: 'Справочники',
             handler: function () {
                 location.href = 'dict.html';
             },
-            disabled: !checkUserRole('D_R')
+            disabled: !checkUserRole('DICTIONARIES_R')
         }, {
             text: 'Пользователи',
             handler: function () {
                 location.href = 'users.html';
             },
-            disabled: !checkUserRole('U_R')
+            disabled: !checkUserRole('USERS_R')
         }
     ]
 });
@@ -113,16 +33,12 @@ var menuPanel = Ext.create('Ext.panel.Panel', {
             }
         }, {
             xtype: 'splitbutton',
-            text: 'Автошкола',
+            text: 'Интерны',
             menu: menu1
         }, {
             xtype: 'splitbutton',
-            text: 'Учёт обучения',
-            menu: menu2
-        }, {
-            xtype: 'splitbutton',
             text: 'Администрирование',
-            menu: menu3
+            menu: menu2
         }, {
             xtype: 'button',
             text: (sessvars.userPrivileges) ? ((sessvars.userPrivileges == '#') ? 'Вход в систему' : 'Выход из системы (' + sessvars.userName + ')') : 'Вход в систему',
@@ -136,8 +52,6 @@ var menuPanel = Ext.create('Ext.panel.Panel', {
                 } else {
                     login();
                 }
-
-
             }
         }]
 });
@@ -159,7 +73,7 @@ function login() {
         extend: 'Ext.data.Model',
         proxy: {
             type: 'jsonp',
-            url: 'AS_login.php',
+            url: 'login.php',
             reader: {
                 type: 'json',
                 root: 'list'
@@ -170,8 +84,7 @@ function login() {
         fields: [
             {name: 'id', type: 'int'},
             'name',
-            'privileges',
-            {name: 'school_unit_id', type: 'int'}
+            'privileges'
         ]
     });
 
