@@ -18,6 +18,36 @@ USE `phint`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `courses`
+--
+
+DROP TABLE IF EXISTS `courses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `courses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `school_id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_courses_schools_idx` (`school_id`),
+  KEY `fk_cources_users_idx` (`updated_by`),
+  CONSTRAINT `fk_cources_users` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_courses_schools` FOREIGN KEY (`school_id`) REFERENCES `schools` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `courses`
+--
+
+LOCK TABLES `courses` WRITE;
+/*!40000 ALTER TABLE `courses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `courses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `interns`
 --
 
@@ -47,6 +77,39 @@ LOCK TABLES `interns` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `interns_courses`
+--
+
+DROP TABLE IF EXISTS `interns_courses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `interns_courses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `intern_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `end_date` datetime NOT NULL,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_intern_courses_interns_idx` (`intern_id`),
+  KEY `fk_intern_courses_courses_idx` (`course_id`),
+  KEY `fk_intern_courses_users_idx` (`updated_by`),
+  CONSTRAINT `fk_intern_courses_courses` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_intern_courses_interns` FOREIGN KEY (`intern_id`) REFERENCES `interns` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_intern_courses_users` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `interns_courses`
+--
+
+LOCK TABLES `interns_courses` WRITE;
+/*!40000 ALTER TABLE `interns_courses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `interns_courses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `privileges`
 --
 
@@ -73,6 +136,37 @@ LOCK TABLES `privileges` WRITE;
 /*!40000 ALTER TABLE `privileges` DISABLE KEYS */;
 INSERT INTO `privileges` VALUES ('DICTIONARIES_R','Справочники (чтение)','2017-02-12 17:09:45',NULL),('INTERNS_R','Интерны (чтение)','2017-02-12 17:09:45',NULL),('USERS_R','Пользователи (чтение)','2017-02-12 17:09:45',NULL);
 /*!40000 ALTER TABLE `privileges` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `schools`
+--
+
+DROP TABLE IF EXISTS `schools`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `schools` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `short_name` varchar(50) DEFAULT NULL,
+  `address` varchar(200) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL,
+  `contact_person` varchar(100) DEFAULT NULL,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_schools_users_idx` (`updated_by`),
+  CONSTRAINT `fk_schools_users` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='перечень фотошкол';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `schools`
+--
+
+LOCK TABLES `schools` WRITE;
+/*!40000 ALTER TABLE `schools` DISABLE KEYS */;
+/*!40000 ALTER TABLE `schools` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -394,4 +488,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-02-12 17:17:29
+-- Dump completed on 2017-02-13 22:34:52
