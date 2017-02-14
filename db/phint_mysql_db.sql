@@ -60,11 +60,11 @@ CREATE TABLE `interns` (
   `middlename` varchar(50) DEFAULT NULL,
   `lastname` varchar(50) DEFAULT NULL,
   `birthdate` datetime DEFAULT NULL,
-  `active` int(11) DEFAULT NULL,
+  `active` int(11) DEFAULT '0',
   `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='перечень стажёров';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='перечень стажёров';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,6 +73,7 @@ CREATE TABLE `interns` (
 
 LOCK TABLES `interns` WRITE;
 /*!40000 ALTER TABLE `interns` DISABLE KEYS */;
+INSERT INTO `interns` VALUES (1,'Иван','Иванович','Иванов','1981-01-01 00:00:00',1,'2017-02-14 18:05:38',NULL),(2,'Пётр','Петрович','Петров','1990-01-01 00:00:00',1,'2017-02-14 18:05:38',NULL);
 /*!40000 ALTER TABLE `interns` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,7 +190,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   KEY `fk_users_users_idx` (`updated_by`),
   CONSTRAINT `fk_users_users` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,6 +199,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'','','админ','admin','21232f297a57a5a743894a0e4a801fc3',1,'2017-02-14 18:15:04',NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -221,7 +223,7 @@ CREATE TABLE `users_privileges` (
   CONSTRAINT `fk_up_privileges` FOREIGN KEY (`privilege_id`) REFERENCES `privileges` (`code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_up_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_up_users1` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=876 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -230,6 +232,7 @@ CREATE TABLE `users_privileges` (
 
 LOCK TABLES `users_privileges` WRITE;
 /*!40000 ALTER TABLE `users_privileges` DISABLE KEYS */;
+INSERT INTO `users_privileges` VALUES (1,1,'DICTIONARIES_R','2017-02-14 18:16:03',NULL),(2,1,'INTERNS_R','2017-02-14 18:16:03',NULL),(3,1,'USERS_R','2017-02-14 18:16:03',NULL);
 /*!40000 ALTER TABLE `users_privileges` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -247,7 +250,8 @@ SET character_set_client = utf8;
  1 AS `middlename`,
  1 AS `lastname`,
  1 AS `birthdate`,
- 1 AS `birthdate_text`*/;
+ 1 AS `birthdate_text`,
+ 1 AS `active`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -257,6 +261,26 @@ SET character_set_client = @saved_cs_client;
 --
 -- Dumping routines for database 'phint'
 --
+/*!50003 DROP FUNCTION IF EXISTS `FN_GETFULLNAME` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `FN_GETFULLNAME`(p_firstname varchar(100),p_middlename varchar(100),p_lastname varchar(100)) RETURNS varchar(302) CHARSET utf8
+BEGIN
+       RETURN trim(CONCAT(IFNULL(p_lastname, ''),' ',IFNULL(p_firstname, ''),' ',IFNULL(p_middlename, '')));
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP FUNCTION IF EXISTS `FN_GETINITIALSNAME` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -275,6 +299,34 @@ BEGIN
 	else
 		RETURN CONCAT(TRIM(p_lastname),' ',LEFT(TRIM(p_firstname), 1),'.',LEFT(TRIM(p_middlename), 1),'.');	
 	end if;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `FN_GETUSERPRIVILEGES` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `FN_GETUSERPRIVILEGES`(p_id int) RETURNS varchar(4000) CHARSET utf8
+BEGIN
+RETURN ifnull((SELECT 
+                CONCAT('#',
+                            GROUP_CONCAT(`up`.`privilege_id`
+                                SEPARATOR '#'),
+                            '#')
+            FROM
+                `users_privileges` `up`
+            WHERE
+                (`up`.`user_id` = p_id)),'#');
 
 END ;;
 DELIMITER ;
@@ -474,7 +526,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `v_interns` AS select `interns`.`id` AS `id`,`interns`.`firstname` AS `firstname`,`interns`.`middlename` AS `middlename`,`interns`.`lastname` AS `lastname`,`interns`.`birthdate` AS `birthdate`,date_format(`interns`.`birthdate`,'%b, %d %Y %H:%i:%s') AS `birthdate_text` from `interns` */;
+/*!50001 VIEW `v_interns` AS select `interns`.`id` AS `id`,`interns`.`firstname` AS `firstname`,`interns`.`middlename` AS `middlename`,`interns`.`lastname` AS `lastname`,`interns`.`birthdate` AS `birthdate`,date_format(`interns`.`birthdate`,'%b, %d %Y %H:%i:%s') AS `birthdate_text`,`interns`.`active` AS `active` from `interns` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -488,4 +540,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-02-13 22:34:52
+-- Dump completed on 2017-02-14 18:24:47
