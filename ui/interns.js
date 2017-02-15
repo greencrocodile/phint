@@ -10,6 +10,7 @@ Ext.require([
 ]);
 
 Ext.onReady(function () {
+	console.log('interns onReady');
 	initDataModels();
     var panelN = Ext.create('Ext.panel.Panel', {
         region: 'north',

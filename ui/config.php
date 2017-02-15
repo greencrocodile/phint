@@ -9,13 +9,12 @@ define('APP_CHARSET', 'UTF-8');
 define('SYSTEM_OEM_CHARSET', 'cp866');
 
 mb_internal_encoding(APP_CHARSET);
-define('LOGIN', "interns_user");
-define('PASSWORD', "intern12345");
-define('SERVER', "localhost");
-define('PORT', "3306");
+define('LOGIN', "phint_user");
+define('PASSWORD', "phint12345");
+define('SERVER', "127.0.0.1:3306");
 define('DATABASE', "phint");
 
-$AS_db = mysqli_connect(SERVER, LOGIN, PASSWORD, DATABASE,PORT) or die_(__FILE__, __LINE__, 'Ошибка при подключении к БД');
+$phint_db = mysqli_connect(SERVER, LOGIN, PASSWORD, DATABASE) or die_(__FILE__, __LINE__, 'Ошибка при подключении к БД');
 mysqli_set_charset($db,'utf8');
 
 //$REPORTS_TEMPLATES_PATH = 'D:/work/AS/Reports/templates/';
@@ -40,7 +39,7 @@ function escape4jsnobr($str) {
 
 function mysqli_get_db_charset($stmt) {
     $query = "SELECT @@character_set_database;";
-    $result = mysqli_query($stmt, $query) or die_(__FILE__, __LINE__, 'Ошибка при выполнении запроса: ' . "\n" . iconv(CHARSET, APP_CHARSET, $query) . "\n" . $AS_db->error);
+    $result = mysqli_query($stmt, $query) or die_(__FILE__, __LINE__, 'Ошибка при выполнении запроса: ' . "\n" . iconv(CHARSET, APP_CHARSET, $query) . "\n" . $phint_db->error);
     while ($row = mysqli_fetch_array($result, MYSQL_NUM)) {
         break;
     };

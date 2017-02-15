@@ -3,7 +3,7 @@ function initDataModels() {
 		extend: 'Ext.data.Model',
 		// proxy: {
 			// type: 'jsonp',
-			// url: 'AS_lgroups_list.php',
+			// url: 'interns-list.php',
 			// extraParams: {active_only: 1},
 			// simpleSortMode: true,
 			// reader: {

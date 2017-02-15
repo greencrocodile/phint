@@ -2,6 +2,9 @@ sessvars.myObj = {userId: -1, userName: '', userPrivileges: '#', schoolUnitId: -
 var menu1 = Ext.create('Ext.menu.Menu', {
     items: [{
         text: 'Перечень',
+		handler: function () {
+            location.href = 'interns.html';
+        },
         disabled: !checkUserRole('INTERNS_R')
     }]
 });

@@ -105,6 +105,7 @@ if ($lastname != ''){
 
 	
 $query .= ' order by ' . $sort . ' ' . $dir . ' limit ' . $limit . ' offset ' . $offset;
+Log_($query);
 $result = $db->query($query) or die_(__FILE__, __LINE__, 'Ошибка при выполнении запроса: ' . "\n" . $query . "\n" . $db->error, $db->error);
 $d = '';
 while ($arr = $result->fetch_assoc()) {
