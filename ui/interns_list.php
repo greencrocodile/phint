@@ -83,7 +83,7 @@ if (isset($_REQUEST['limit'])) {
 
 //---------------------------------------
 $offset = ($page - 1) * $limit;
-$query = 'SELECT id,firstname,middlename,lastname,birth_date_text,birth_date,active FROM v_interns where id >= 0 ';
+$query = 'SELECT id,firstname,middlename,lastname,birthdate_text,active FROM v_interns where id >= 0 ';
 if($id != -1){
 	$query .= ' and id = '.$id;
 } else {
@@ -105,8 +105,7 @@ if ($lastname != ''){
 
 	
 $query .= ' order by ' . $sort . ' ' . $dir . ' limit ' . $limit . ' offset ' . $offset;
-Log_($query);
-$result = $db->query($query) or die_(__FILE__, __LINE__, 'Ошибка при выполнении запроса: ' . "\n" . $query . "\n" . $db->error, $db->error);
+$result = $phint_db->query($query) or die_(__FILE__, __LINE__, 'Ошибка при выполнении запроса: ' . "\n" . $query . "\n" . $db->error, $db->error);
 $d = '';
 while ($arr = $result->fetch_assoc()) {
     $d.=',{
@@ -114,7 +113,7 @@ while ($arr = $result->fetch_assoc()) {
 \'lastname\': \'' . escape4js($arr['lastname']) . '\',
 \'firstname\': \'' . escape4js($arr['firstname']) . '\',
 \'middlename\': \'' . escape4js($arr['middlename']) . '\',
-\'birth_date\': ' . (($arr['birth_date_text'] == '') ? 'null' : 'new Date(\'' . escape4js($arr['birth_date_text']) . '\')') . ',
+\'birthdate\': ' . (($arr['birthdate_text'] == '') ? 'null' : 'new Date(\'' . escape4js($arr['birthdate_text']) . '\')') . ',
 \'active\':' . intval($arr['active']) . '
 }';
 }
@@ -126,7 +125,7 @@ if ($start_id == -1) {
 \'lastname\': \'-----\',
 \'firstname\' \'\',
 \'middlename\': \'\',
-\'birth_date\': \'\',
+\'birthdate\': \'\',
 \'active\':1
 		}'.$d;
 }
@@ -153,7 +152,7 @@ if ($lastname != ''){
 	$query .= ' and lastname like \'%'.$lastname.'%\'';
 }
 
-$result = $db->query($query) or die_(__FILE__, __LINE__, 'Ошибка при выполнении запроса: ' . "\n" . $query . "\n" . $db->error, $db->error);
+$result = $phint_db->query($query) or die_(__FILE__, __LINE__, 'Ошибка при выполнении запроса: ' . "\n" . $query . "\n" . $db->error, $db->error);
 $total = 0;
 while ($arr = $result->fetch_assoc()) {
     $total = intval($arr['Total']);

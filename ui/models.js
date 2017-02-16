@@ -13,8 +13,10 @@ function initDataModels() {
 		// },
 		fields: [
 			{name: 'id', type: 'int'},
-			'',
-			{name: 'date_start', type: 'date'},
+			'firstname',
+			'middlename',
+			'lastname',
+			{name: 'birthdate', type: 'date'}
 		],
 		idProperty: 'id'
 	});

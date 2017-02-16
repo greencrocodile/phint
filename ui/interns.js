@@ -10,7 +10,6 @@ Ext.require([
 ]);
 
 Ext.onReady(function () {
-	console.log('interns onReady');
 	initDataModels();
     var panelN = Ext.create('Ext.panel.Panel', {
         region: 'north',
@@ -68,7 +67,7 @@ Ext.onReady(function () {
                     width: 100,
                     sortable: true
                 }, {
-                    dataIndex: 'birth_date',
+                    dataIndex: 'birthdate',
                     text: 'дата рождения',
                     renderer: Ext.util.Format.dateRenderer('d.m.Y'),
                     width: 70,
@@ -148,148 +147,27 @@ Ext.onReady(function () {
             ]
         });
 
-		var numberField = Ext.create('Ext.form.field.Text', {
-            fieldLabel: '№ группы',
+		var firstnameField = Ext.create('Ext.form.field.Text', {
+            fieldLabel: 'Имя',
+			region: 'north',
+            allowBlank: true,
+            margin: '3 3 3 3'
+        });		
+		
+		var middlenameField = Ext.create('Ext.form.field.Text', {
+            fieldLabel: 'Отчество',
+			region: 'north',
+            allowBlank: true,
+            margin: '3 3 3 3'
+        });		
+		
+		var lastnameField = Ext.create('Ext.form.field.Text', {
+            fieldLabel: 'Фамилия',
 			region: 'north',
             allowBlank: true,
             margin: '3 3 3 3'
         });
-		
-		var startDateFromField = Ext.create('Ext.form.field.Date', {
-            fieldLabel: 'с',
-			region: 'north',
-			startDay: 1,
-            labelAlign: 'right',
-			labelWidth: 30,
-            format: 'd.m.Y',
-            margin: '3 3 3 3'
-        });
-		
-		var startDateTillField = Ext.create('Ext.form.field.Date', {
-            fieldLabel: 'по',
-			region: 'north',
-			startDay: 1,
-            labelAlign: 'right',
-			labelWidth: 30,
-            format: 'd.m.Y',
-            margin: '3 3 3 3'
-        });
-		
-		var endDateFromField = Ext.create('Ext.form.field.Date', {
-            fieldLabel: 'с',
-			region: 'north',
-			startDay: 1,
-            labelAlign: 'right',
-			labelWidth: 30,
-            format: 'd.m.Y',
-            margin: '3 3 3 3'
-        });
-		
-		var endDateTillField = Ext.create('Ext.form.field.Date', {
-            fieldLabel: 'по',
-			region: 'north',
-			startDay: 1,
-            labelAlign: 'right',
-			labelWidth: 30,
-            format: 'd.m.Y',
-            margin: '3 3 3 3'
-        });
 
-		var theoryDateFromField = Ext.create('Ext.form.field.Date', {
-            fieldLabel: 'с',
-			region: 'north',
-			startDay: 1,
-            labelAlign: 'right',
-			labelWidth: 30,
-            format: 'd.m.Y',
-            margin: '3 3 3 3'
-        });
-		
-		var theoryDateTillField = Ext.create('Ext.form.field.Date', {
-            fieldLabel: 'по',
-			region: 'north',
-			startDay: 1,
-            labelAlign: 'right',
-			labelWidth: 30,
-            format: 'd.m.Y',
-            margin: '3 3 3 3'
-        });
-		
-		var practiceDateFromField = Ext.create('Ext.form.field.Date', {
-            fieldLabel: 'с',
-			region: 'north',
-			startDay: 1,
-            labelAlign: 'right',
-			labelWidth: 30,
-            format: 'd.m.Y',
-            margin: '3 3 3 3'
-        });
-		
-		var practiceDateTillField = Ext.create('Ext.form.field.Date', {
-            fieldLabel: 'по',
-			region: 'north',
-			startDay: 1,
-            labelAlign: 'right',
-			labelWidth: 30,
-            format: 'd.m.Y',
-            margin: '3 3 3 3'
-        });
-		
-		var gibddDateFromField = Ext.create('Ext.form.field.Date', {
-            fieldLabel: 'с',
-			region: 'north',
-			startDay: 1,
-            labelAlign: 'right',
-			labelWidth: 30,
-            format: 'd.m.Y',
-            margin: '3 3 3 3'
-        });
-		
-		var gibddDateTillField = Ext.create('Ext.form.field.Date', {
-            fieldLabel: 'по',
-			region: 'north',
-			startDay: 1,
-            labelAlign: 'right',
-			labelWidth: 30,
-            format: 'd.m.Y',
-            margin: '3 3 3 3'
-        });
-		
-		var schoolUnitsCombo = Ext.create('Ext.form.ComboBox', {
-            fieldLabel: 'Подразделение',
-			region: 'north',
-            store: schoolUnitsStore,
-            queryMode: 'local',
-            displayField: 'name_full',
-            valueField: 'id',
-            margin: '3 3 3 3',
-            labelWidth: 100,
-            width: 500,
-			matchFieldWidth: false,
-			listConfig: {
-				width: 500
-			},
-            editable: true,
-            allowBlank: true
-		});
-		
-		var lProgramsCombo = Ext.create('Ext.form.ComboBox', {
-            fieldLabel: 'Программа обучения',
-			region: 'north',
-            store: lProgramsStore,
-            queryMode: 'local',
-            displayField: 'name_full',
-            valueField: 'id',
-            margin: '3 3 3 3',
-            labelWidth: 100,
-            width: 500,
-			matchFieldWidth: false,
-			listConfig: {
-				width: 500
-			},
-            editable: true,
-            allowBlank: true
-		});
 
 		
 		var bSearch = Ext.create('Ext.Button', {
@@ -302,17 +180,9 @@ Ext.onReady(function () {
 						internsStore.getProxy().extraParams = {
 							start_id: 0, 
 							active_only: 1, 
-							group_number : numberField.getValue(),
-							date_start_from: startDateFromField.getValue(),
-							date_start_till: startDateTillField.getValue(),
-							date_end_from: endDateFromField.getValue(),
-							date_end_till: endDateTillField.getValue(),
-							theory_exam_date_from: theoryDateFromField.getValue(),
-							theory_exam_date_till: theoryDateTillField.getValue(),
-							practice_exam_date_from: practiceDateFromField.getValue(),
-							practice_exam_date_till: practiceDateTillField.getValue(),
-							gibdd_exam_date_from: gibddDateFromField.getValue(),
-							gibdd_exam_date_till: gibddDateTillField.getValue(),
+							firstname : firstnameField.getValue(),
+							middlename : middlenameField.getValue(),
+							lastname : lastnameField.getValue()
 						};
 						internsStore.load();
 					
@@ -326,17 +196,9 @@ Ext.onReady(function () {
 			disabled: !checkUserRole('INTERNS_R'),
 			listeners: {
 				click: function () {
-					numberField.setValue('');
-					startDateFromField.setValue('');
-					startDateTillField.setValue('');
-					endDateFromField.setValue('');
-					endDateTillField.setValue('');
-					theoryDateFromField.setValue('');
-					theoryDateTillField.setValue('');
-					practiceDateFromField.setValue('');
-					practiceDateTillField.setValue('');
-					gibddDateFromField.setValue('');
-					gibddDateTillField.setValue('');
+					firstnameField.setValue('');
+					middlenameField.setValue('');
+					lastnameField.setValue('');
 					internsStore.getProxy().extraParams = {start_id: 0, active_only: 1};
 					internsStore.load();
 				}
@@ -355,59 +217,9 @@ Ext.onReady(function () {
 			resizable: true,
 			title: 'Фильтр',
             items: [
-                numberField,
-			    lProgramsCombo,
-				{
-					xtype: 'fieldset',
-					title: 'Начало обучения',
-					region: 'north',
-					layout: 'hbox',
-					items: [
-						startDateFromField,
-						startDateTillField
-					]
-				},
-				{
-					xtype: 'fieldset',
-					title: 'Окончание обучения',
-					region: 'north',
-					layout: 'hbox',
-					items: [
-						endDateFromField,
-						endDateTillField
-					]
-				},
-				{
-					xtype: 'fieldset',
-					title: 'Дата сдачи теории',
-					region: 'north',
-					layout: 'hbox',
-					items: [
-						theoryDateFromField,
-						theoryDateTillField
-					]
-				},
-				{
-					xtype: 'fieldset',
-					title: 'Дата сдачи вождения',
-					region: 'north',
-					layout: 'hbox',
-					items: [
-						practiceDateFromField,
-						practiceDateTillField
-					]
-				},
-				{
-					xtype: 'fieldset',
-					title: 'Дата экзамена ГИБДД',
-					region: 'north',
-					layout: 'hbox',
-					items: [
-						gibddDateFromField,
-						gibddDateTillField
-					]
-				},
-				schoolUnitsCombo,
+                lastnameField,
+                firstnameField,
+                middlenameField,
 				{
 					xtype: 'fieldcontainer',
 					region: 'north',
@@ -427,7 +239,7 @@ Ext.onReady(function () {
 			layout: 'border',
 			region: 'center',
             items: [
-                editLGroupsPanel,
+                editInternPanel,
 				Ext.create('Ext.panel.Panel', {
 					border: false,
 					bodyCls: 'alt-background',
@@ -444,8 +256,8 @@ Ext.onReady(function () {
        
 
 
-        lGroupsStore.getProxy().extraParams = {start_id: 0, active_only: 1};
-        lGroupsStore.load();
+        internsStore.getProxy().extraParams = {start_id: 0, active_only: 1};
+        internsStore.load();
 
 
         
